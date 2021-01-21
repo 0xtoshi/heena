@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "3db5a3e0-c2a4-4f95-84d7-3803bdbf52da",
+		"name": "Karang Taruna",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Buat User Baru",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/pengguna/buat?username=heena&password=unch123&role=Ketua",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"pengguna",
+						"buat"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "heena"
+						},
+						{
+							"key": "password",
+							"value": "unch123"
+						},
+						{
+							"key": "role",
+							"value": "Ketua"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/pengguna/login?username=heena&password=unch123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"pengguna",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "heena"
+						},
+						{
+							"key": "password",
+							"value": "unch123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Session",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/pengguna/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"pengguna",
+						"session"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

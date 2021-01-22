@@ -67,7 +67,7 @@
           <div class="left-header col horizontal-wrapper pl-0">
             <ul class="horizontal-menu">
               
-            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="credit-card"></i><span>Rekening</span></a>
+            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="database"></i><span>Kas</span></a>
               
                  
               </li>

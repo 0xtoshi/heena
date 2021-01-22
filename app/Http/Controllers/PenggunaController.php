@@ -126,4 +126,30 @@ class PenggunaController extends Controller
 
         return $oceng_session;
     }
+
+    public function UbahPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|max:255|min:5',
+        ]);
+
+
+        $oceng_session = session('pengguna');
+
+        
+        // API Validator Yeyy Ndoro 
+
+    	if ($validator->fails()) {
+           return response()->json([
+					'error' => true, 'messages' => $validator->messages() 
+				], 400);
+           exit;
+        }
+
+        Pengguna::where('id_pengguna', $oceng_session['id_pengguna'])
+        ->update([
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+    }
 }

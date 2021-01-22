@@ -48,3 +48,6 @@ Route::get('/kas/show/{id}','KasController@ShowKas');
 
 Route::post('/nota/upload','NotaneController@UploadNota');
 Route::get('/nota/id','NotaneController@getLastID');
+
+
+Route::post('/profile/ubahpassword','PenggunaController@UbahPassword');

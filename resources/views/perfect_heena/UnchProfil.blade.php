@@ -159,16 +159,16 @@
                     <h5><i data-feather="lock"></i> Ganti Password</h5><span>Form Ganti Password</span>
                   </div>
                   <div class="card-body">
-                    <form id="tambah_rekening">
+                    <form id="ubah_password">
                       <div class="row">
                         <div class="col-md-6 mb-3">
                           <label for="bank">Password Baru</label>
-                          <input class="form-control" type="password" id="bank" name="bank" placeholder="" required="" data-original-title="" title="">
+                          <input class="form-control" type="password" id="password1" name="password1" placeholder="" required="" data-original-title="" title="">
                           
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="no_rek">Verifikasi Password Baru</label>
-                          <input class="form-control" type="password" id="no_rek" name="no_rek" placeholder="" required="" data-original-title="" title="">
+                          <input class="form-control" type="password" id="password2" name="password2" placeholder="" required="" data-original-title="" title="">
                         </div>
                       </div>
                       <button class="btn btn-primary" type="submit" data-original-title="" title="">Ganti Password</button>
@@ -193,6 +193,8 @@
         </footer>
       </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery-3.5.1.min.js"></script>
     <!-- Bootstrap js-->
@@ -229,25 +231,40 @@
 
   <script>
 
-$('form[id=tambah_rekening]').submit( (e) => {
+$('form[id=ubah_password]').submit( (e) => {
           
           e.preventDefault();
           
-          var rekening_data =  $('form[id=ganti_password]').serialize();
+          var password1 = $('#password1').val();
+          var password2 = $('#password2').val();
+
+          if(password1 !== password2) {
+            
+            
+            swal({
+                    title: "Error 😿!",
+                    text: "Password Yang anda masukan tidak benar!",
+                    type: "error",
+                    icon: "error",
+                });
+
+
+          }
+
 
           $.ajax({
-              url: '/rekening/tambah',
+              url: '/profile/ubahpassword',
               type: 'POST',
-              data: rekening_data,
+              data: {password : password1 },
               success : (data) => {
                 //console.log(data);
                 swal({
                     title: "Suksess 😽!",
-                    text: "Sukses menambahkan Rekening!",
+                    text: "Sukses mengubah password!",
                     type: "success",
                     icon: "success",
                 }).then(function() {
-                    window.location = "rekening";
+                    window.location = "profil";
                 });
               },
               error : (data) => {
@@ -259,9 +276,10 @@ $('form[id=tambah_rekening]').submit( (e) => {
                 });
               }
             })
+
+  
         
         });
 
-      })
   </script>
 </html>

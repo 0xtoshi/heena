@@ -199,13 +199,13 @@
                            
                           
                           @foreach ($data_rek as $key => $value)
-                                          <tr id="{{ $value->id_rekening }}">
+                                          <tr id="{{ $value->id_rekening }}" value="{{ $value->bank }}">
                                               <td>{{ $key + 1 }}</td>
                                               <td>{{ $value->bank }}</td>
                                               <td>{{ $value->no_rek }}</td>
-                                              <td>
+                                              <td style="width:1px; white-space:nowrap;">
                                               <button id="delete-bank" type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
-                                              <button id="edit-user" type="button" class="btn btn-success"><i class="fa fa-add"></i><i class="fa fa-edit "></i> Edit</button>
+                                              <button id="edit-bank" type="button" class="btn btn-success"><i class="fa fa-add"></i><i class="fa fa-edit "></i> Edit</button>
                                               </td>                               
                                           </tr>
                           @endforeach
@@ -221,6 +221,36 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
+
+
+                    <div class="modal fade" id="exampleModalfat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Edit Data Bank</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="bank_popup">
+                              <input type="hidden" value="" id="id_rekening" name="id_rekening">
+                              <div class="form-group">
+                                <label class="col-form-label" for="recipient-name">Bank</label>
+                                <input class="form-control" value="" id="modal_bank" name="bank" type="text">
+                              </div>
+                              <div class="form-group">
+                                <label class="col-form-label" for="recipient-name">No Rek</label>
+                                <input class="form-control" value="" id="modal_rek" name="no_rek" type="text" >
+                              </div>
+                            
+                          </div>
+                          <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" type="submit">Update!</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
 
         <!-- footer start-->
         <footer class="footer">
@@ -238,6 +268,8 @@
     </div>
     <!-- latest jquery-->
     <script src="/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
+    
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/popper.min.js"></script>
     <script src="/assets/js/bootstrap/bootstrap.js"></script>
@@ -261,7 +293,6 @@
     <script src="/assets/js/owlcarousel/owl.carousel.js"></script>
     <script src="/assets/js/dashboard/dashboard_2.js"></script>
     <script src="/assets/js/tooltip-init.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="/assets/js/script.js"></script>
@@ -308,24 +339,98 @@
 
       $('button[id=delete-bank]').click(function(){
           var anu = $(this).parents('tr').attr('id');
-          Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          }
-        })
+          var value = $(this).parents('tr').attr('value');
+
+          swal({
+            title: "Hapus ("+value+") 😿?",
+            text: "Apakah anda yakin ingin menghapus?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                url : 'http://localhost:8000/rekening/delete',
+                type : 'POST',
+                data : { id : anu},
+                success : (data) => {
+                  swal("Sukses Menghapus "+ value +" 😽 !", {
+                    icon: "success",
+                  });
+                },
+                error : (err) => {
+                  swal("Gagal Menghapus "+ value +" 😿 !", {
+                    icon: "error",
+                  });
+                }
+              })
+              
+            } else {
+              swal("Rekeing Bank Batal Dihapus 😽!");
+            }
+          });
+
       });
+
+      $('button[id=edit-bank]').click(function(){
+          var anu = $(this).parents('tr').attr('id');
+          var value = $(this).parents('tr').attr('value');
+
+          $.ajax({
+            url : '/rekening/show/'+anu,
+            type : 'GET',
+            success : (data) => {
+
+                        $('#exampleModalfat').modal({show:true});
+                        
+                        $('#id_rekening').val(data.id_rekening);
+                        $('#modal_rek').val(data.no_rek);
+                        $('#modal_bank').val(data.bank);
+
+                        
+                        
+            },
+            error : (error) => {
+              console.log(error);
+            }
+          })
+
+          
+
+      });
+
+
+      $('form[id=bank_popup]').submit( (e) => {
+
+        e.preventDefault();
+        var data =  $('form[id=bank_popup]').serialize();
+        $.ajax({
+              url: '/rekening/update',
+              type: 'POST',
+              data: data,
+              success : (data) => {
+                //console.log(data);
+                swal({
+                    title: "Suksess 😽!",
+                    text: "Sukses update Rekening!",
+                    type: "success",
+                    icon: "success",
+                }).then(function() {
+                    window.location = "rekening";
+                });
+              },
+              error : (data) => {
+                swal({
+                    title: "Error 😿!",
+                    text: "Pastikan form telah diisi dengan benar!",
+                    type: "error",
+                    icon: "error",
+                });
+              }
+            })
+
+      })
     </script>
     
     <!-- login js-->

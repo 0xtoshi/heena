@@ -36,3 +36,11 @@ Route::get('/rekap', 'UnchUI@UnchRekap');
 
 Route::post('/rekening/tambah','RekeningController@TambahRekening');
 Route::post('/rekening/delete','RekeningController@DeleteRekening');
+Route::post('/rekening/update','RekeningController@UpdateRekening');
+Route::get('/rekening/show/{id}','RekeningController@getDataRekening');
+
+
+Route::post('/kas/tambah','KasController@TambahKas');
+Route::post('/kas/delete','KasController@DeleteKas');
+Route::post('/kas/update','KasController@UpdateKas');
+Route::get('/kas/show/{id}','KasController@ShowKas');

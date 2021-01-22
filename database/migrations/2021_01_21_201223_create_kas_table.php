@@ -18,6 +18,7 @@ class CreateKasTable extends Migration
             $table->string('nominal', 12);
             $table->text('keterangan');
             $table->date('tanggal');
+            $table->enum('tipe', ['kas_masuk','kas_keluar']);
             $table->bigInteger('id_nota')->unsigned();
             $table->bigInteger('id_rekening')->unsigned();
             $table->bigInteger('id_pengguna')->unsigned();

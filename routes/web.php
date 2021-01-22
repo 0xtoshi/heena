@@ -23,3 +23,15 @@ Route::post('/pengguna/buat', 'PenggunaController@UnchMakeUser');
 Route::post('/pengguna/login', 'PenggunaController@UnchLogin');
 Route::get('/pengguna/session', 'PenggunaController@UnchSessionCek');
 
+Route::get('/login', 'UnchUI@UnchLogin');
+Route::get('/dashboard', 'UnchUI@UnchDashboard');
+Route::get('/rekening', 'UnchUI@UnchRekening');
+Route::get('/kas/masuk', 'UnchUI@UnchKasMasuk');
+Route::get('/kas/keluar', 'UnchUI@UnchKasKeluar');
+Route::get('/profil', 'UnchUI@UnchProfil');
+Route::get('/rekap', 'UnchUI@UnchRekap');
+
+
+// ROUTING CRUD REKENING
+
+Route::post('/rekening/tambah','RekeningController@TambahRekening');

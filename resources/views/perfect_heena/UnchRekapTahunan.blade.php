@@ -153,36 +153,57 @@
           </div>
           <!-- Container-fluid starts-->
           <div class="container-fluid">
-            <div class="row">
+          <div class="row">
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5>Rekap Data</h5><span>Rekap Data Berdasarkan Range</span>
+                    <h5><i data-feather="book-open"></i> List Kas Keluar</h5><span>Kas Masuk Per {{ date('F') }} {{ date('Y') }}</span>
                   </div>
                   <div class="card-body">
-                  <div class="col-xl-12">
-                  
-                  <form method="post" action="">
-                  <div class="theme-form">
-                      <div class="form-group">
-                        <label>Rekap Bedasarkan Range</label>
-                        <input class="form-control" type="text" name="daterange" value="08/15/2020 - 01/22/2021">
+                  <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap">
+                          <thead class="table-primary">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Nominal</th>
+                              <th scope="col">Tanggal</th>
+                              <th scope="col">Keterangan </th>
+                              <th scope="col">Nota </th>
+                              <th scope="col">Aksi </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                           
+                          
+                          @foreach ($data_kas as $key => $value)
+                                          <tr id="{{ $value->id_rekening }}" value="{{ $value->bank }}">
+                                              <td>{{ $key + 1 }}</td>
+                                              <td>@currency($value->nominal)</td>
+                                              <td>{{ $value->tanggal }}</td>
+                                              <td>{{ $value->keterangan }}</td>
+                                              <td  style="width:300px; white-space:nowrap;">
+                                              
+                                              <div class="gallery my-gallery card-body row" itemscope="">
+                                                <figure class="col-xl-3 col-md-4 col-6" itemprop="associatedMedia" itemscope="">
+                                                  <a href="{{ $value->lokasi_gambar }}" itemprop="contentUrl" data-size="1000x1000">
+                                                    <img class="img-thumbnail img-responsive" src="/assets/images/folder.png" itemprop="thumbnail" alt="Image description">
+                                                  </a>
+                                                  <figcaption itemprop="caption description">Image caption  1</figcaption>
+                                                </figure>
+                                              </div>
+                                            
+                                              </td>
+                                              <td style="width:1px; white-space:nowrap;">
+                                              <button id="delete-kas" type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
+                                             
+                                              </td>                               
+                                          </tr>
+                          @endforeach
+
+                          
+                          </tbody>
+                        </table>
                       </div>
-                      <button class="btn btn-primary">Submit</button>
-                  </div>
-                  </form>
-
-                  <br/>
-
-                 
-
-
-                  <br/>
-
-                 
-
-
-                  </div>
                   </div>
                 </div>
               </div>
@@ -200,54 +221,8 @@
               </div>
             </div>
           </div>
-        </footer>
-        <script>
-          var map;
-          function initMap() {
-            map = new google.maps.Map(
-              document.getElementById('map'),
-              {center: new google.maps.LatLng(-33.91700, 151.233), zoom: 18});
-          
-            var iconBase =
-              '/assets/images/dashboard-2/';
-          
-            var icons = {
-              userbig: {
-                icon: iconBase + '1.png'
-              },
-              library: {
-                icon: iconBase + '3.png'
-              },
-              info: {
-                icon: iconBase + '2.png'
-              }
-            };
-          
-            var features = [
-              {
-                position: new google.maps.LatLng(-33.91752, 151.23270),
-                type: 'info'
-              }, {
-                position: new google.maps.LatLng(-33.91700, 151.23280),
-                type: 'userbig'
-              },  {
-                position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
-                type: 'library'
-              }
-            ];
-          
-            // Create markers.
-            for (var i = 0; i < features.length; i++) {
-              var marker = new google.maps.Marker({
-                position: features[i].position,
-                icon: icons[features[i].type].icon,
-                map: map
-              });
-            };
-          }
-        </script>
-        <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&amp;callback=initMap"></script>
-      </div>
+        </footer>   
+    </div>
     </div>
     <!-- latest jquery-->
     <script src="/assets/js/jquery-3.5.1.min.js"></script>

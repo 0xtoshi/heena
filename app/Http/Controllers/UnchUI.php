@@ -81,4 +81,12 @@ class UnchUI extends Controller
     {
         return view('perfect_heena/UnchRekap');   
     }
+
+    public function UnchRekapTahunan($id)
+    {
+        $data_kas = Kas::whereYear('tanggal','=', $id)
+                    ->get();
+
+        return view('perfect_heena/UnchRekapTahunan', [ 'data_kas' => $data_kas ]);   
+    }
 }

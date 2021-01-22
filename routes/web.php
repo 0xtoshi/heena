@@ -22,32 +22,41 @@ Route::get('/', function () {
 Route::post('/pengguna/buat', 'PenggunaController@UnchMakeUser');
 Route::post('/pengguna/login', 'PenggunaController@UnchLogin');
 Route::get('/pengguna/session', 'PenggunaController@UnchSessionCek');
-
 Route::get('/login', 'UnchUI@UnchLogin');
-Route::get('/dashboard', 'UnchUI@UnchDashboard');
-Route::get('/rekening', 'UnchUI@UnchRekening');
-Route::get('/kas/masuk', 'UnchUI@UnchKasMasuk');
-Route::get('/kas/keluar', 'UnchUI@UnchKasKeluar');
-Route::get('/profil', 'UnchUI@UnchProfil');
-Route::get('/rekap', 'UnchUI@UnchRekap');
 
 
-// ROUTING CRUD REKENING
+Route::group( ['middleware' => 'heenasession'], function(){ 
 
-Route::post('/rekening/tambah','RekeningController@TambahRekening');
-Route::post('/rekening/delete','RekeningController@DeleteRekening');
-Route::post('/rekening/update','RekeningController@UpdateRekening');
-Route::get('/rekening/show/{id}','RekeningController@getDataRekening');
+    
+    Route::get('/dashboard', 'UnchUI@UnchDashboard');
+    Route::get('/rekening', 'UnchUI@UnchRekening');
+    Route::get('/kas/masuk', 'UnchUI@UnchKasMasuk');
+    Route::get('/kas/keluar', 'UnchUI@UnchKasKeluar');
+    Route::get('/profil', 'UnchUI@UnchProfil');
+    Route::get('/rekap', 'UnchUI@UnchRekap');
+    
+    
+    // ROUTING CRUD REKENING
+    
+    Route::post('/rekening/tambah','RekeningController@TambahRekening');
+    Route::post('/rekening/delete','RekeningController@DeleteRekening');
+    Route::post('/rekening/update','RekeningController@UpdateRekening');
+    Route::get('/rekening/show/{id}','RekeningController@getDataRekening');
+    
+    
+    Route::post('/kas/tambah','KasController@TambahKas');
+    Route::post('/kas/delete','KasController@DeleteKas');
+    Route::post('/kas/update','KasController@UpdateKas');
+    Route::get('/kas/show/{id}','KasController@ShowKas');
+    
+    
+    Route::post('/nota/upload','NotaneController@UploadNota');
+    Route::get('/nota/id','NotaneController@getLastID');
+    
+    
+    Route::post('/profile/ubahpassword','PenggunaController@UbahPassword');
 
+    Route::get('/rekap/tahunan/{id}','UnchUI@UnchRekapTahunan');
 
-Route::post('/kas/tambah','KasController@TambahKas');
-Route::post('/kas/delete','KasController@DeleteKas');
-Route::post('/kas/update','KasController@UpdateKas');
-Route::get('/kas/show/{id}','KasController@ShowKas');
+});
 
-
-Route::post('/nota/upload','NotaneController@UploadNota');
-Route::get('/nota/id','NotaneController@getLastID');
-
-
-Route::post('/profile/ubahpassword','PenggunaController@UbahPassword');

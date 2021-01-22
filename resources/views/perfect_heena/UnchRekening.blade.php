@@ -196,16 +196,21 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Bank BRI</td>
-                              <td>6690848484444</td>
-                              <td>
-                                <button class="btn btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
-                                <button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button>
-                              </td>
-                              
-                            </tr>
+                           
+                          
+                          @foreach ($data_rek as $key => $value)
+                                          <tr id="{{ $value->id_rekening }}">
+                                              <td>{{ $key + 1 }}</td>
+                                              <td>{{ $value->bank }}</td>
+                                              <td>{{ $value->no_rek }}</td>
+                                              <td>
+                                              <button id="delete-bank" type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
+                                              <button id="edit-user" type="button" class="btn btn-success"><i class="fa fa-add"></i><i class="fa fa-edit "></i> Edit</button>
+                                              </td>                               
+                                          </tr>
+                          @endforeach
+
+                          
                           </tbody>
                         </table>
                       </div>
@@ -299,6 +304,28 @@
         });
 
       })
+
+
+      $('button[id=delete-bank]').click(function(){
+          var anu = $(this).parents('tr').attr('id');
+          Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          }
+        })
+      });
     </script>
     
     <!-- login js-->

@@ -35,3 +35,4 @@ Route::get('/rekap', 'UnchUI@UnchRekap');
 // ROUTING CRUD REKENING
 
 Route::post('/rekening/tambah','RekeningController@TambahRekening');
+Route::post('/rekening/delete','RekeningController@DeleteRekening');

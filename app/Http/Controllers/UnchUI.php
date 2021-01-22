@@ -22,7 +22,8 @@ class UnchUI extends Controller
 
     public function UnchRekening()
     {
-        return view('perfect_heena/UnchRekening');   
+        $data_reekening = Rekening::all();
+        return view('perfect_heena/UnchRekening', [ 'data_rek' => $data_reekening ]);   
     }
 
     public function UnchKasMasuk()

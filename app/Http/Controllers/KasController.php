@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator; // Load Package Validator
 use App\Kas; // Load Model Rekening Ndoro
+use App\Notane;
 use Illuminate\Support\Arr; //Load Library array
 
 class KasController extends Controller
@@ -15,9 +16,9 @@ class KasController extends Controller
         $validator = Validator::make($request->all(), [
             'nominal' => 'required',
             'keterangan' => 'required',
-            'id_nota' => 'required',
             'id_rekening' => 'required',
             'id_pengguna' => 'required',
+            'tanggal' => 'required',
             'tipe' => 'required'
         ]);
         
@@ -30,13 +31,17 @@ class KasController extends Controller
            exit;
         }
 
+        $id_notane = Notane::select('id_nota')->orderBy('id_nota','DESC')->first();
+        $tanggal = date("Y-m-d",strtotime($request->input('tanggal')));
+
         Kas::create([
             'nominal' => $request->input('nominal'),
             'keterangan' => $request->input('keterangan'),
-            'id_nota' => $request->input('id_nota'),
+            'tanggal' => $tanggal,
+            'id_nota' => $id_notane->id_nota,
             'id_rekening' => $request->input('id_rekening'),
             'id_pengguna' => $request->input('id_pengguna'),
-            'tipe' => $request->input('tipe'),
+            'tipe' => $request->input('tipe')
         ]);
 
         return ['error' => false, 'messages' => ['Sukses Menambahkan Rekening! ']];
@@ -47,7 +52,7 @@ class KasController extends Controller
     public function DeleteKas(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'id_kas' => 'required|exists:rekenings',
+            'id_kas' => 'required|exists:kas',
         ]);
         
         // API Validator Yeyy Ndoro 
@@ -59,9 +64,50 @@ class KasController extends Controller
            exit;
         }
 
-        Rekening::where('id_kas', $request->input('id_kas'))->delete();
+        Kas::where('id_kas', $request->input('id_kas'))->delete();
 
-        return ['error' => false, 'messages' => ['Sukses Menghapus Rekening! ']];
+        return ['error' => false, 'messages' => ['Sukses Menghapus Kas! ']];
+
+    }
+
+
+    public function UpdateKas(Request $request) { 
+        
+        $validator = Validator::make($request->all(), [
+            'nominal' => 'required',
+            'keterangan' => 'required',
+            'id_nota' => 'required',
+            'id_rekening' => 'required',
+            'id_pengguna' => 'required',
+            'tipe' => 'required',
+            'tanggal' => 'required'
+        ]);
+        
+        // API Validator Yeyy Ndoro 
+
+    	if ($validator->fails()) {
+           return response()->json([
+					'error' => true, 'messages' => $validator->messages() 
+				], 400);
+           exit;
+        }
+
+        Kas::where('id_kas', $request->input('id_rekening'))
+                ->update([
+                    'nominal' => $request->input('nominal'),
+                    'keterangan' => $request->input('keterangan'),
+                    'id_nota' => $request->input('id_nota'),
+                    'id_rekening' => $request->input('id_rekening'),
+                    'id_pengguna' => $request->input('id_pengguna'),
+                    'tipe' => $request->input('tipe'),
+                ]);
+        
+        return ['error' => false, 'messages' => ['Sukses Update Kas! ']];
+    }
+
+    public function ShowKas($id) {
+
+        return Kas::where('id_kas', $id)->first();
 
     }
     

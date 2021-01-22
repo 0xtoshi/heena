@@ -22,11 +22,15 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/flag-icon.css">
     <!-- Feather icon-->
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/photoswipe.css">
     <!-- Plugins css start-->
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/animate.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/chartist.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/owlcarousel.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/prism.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/date-picker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.31.0/css/jquery.fileupload-ui.min.css" integrity="sha512-Rlj0RFIHhpUPv4EZzRDhF/oFOPlsggW3VeCYaYqnDLvtgiVHf/jSsPE1DcIbEcwz4gbZs/piR4P9723el8dF5g==" crossorigin="anonymous" />
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css">
@@ -63,7 +67,7 @@
           <div class="left-header col horizontal-wrapper pl-0">
             <ul class="horizontal-menu">
               
-            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="database"></i><span>KARANG TARUNA TIPES</span></a>
+            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="credit-card"></i><span>Rekening</span></a>
               
                  
               </li>
@@ -138,13 +142,13 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h3>Sample Page</h3>
+                  
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">                                       <i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item">Pages</li>
-                    <li class="breadcrumb-item active">Sample Page</li>
+                    <li class="breadcrumb-item"><a href="#">                                       <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">Kas Keluar</li>
+                   
                   </ol>
                 </div>
               </div>
@@ -156,10 +160,116 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5>Sample Card</h5><span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                    <h5><i data-feather="book-open"></i> Tambah Kas Keluar </h5><span>Form Tambah Kas Keluar</span>
                   </div>
                   <div class="card-body">
-                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                  <form class="dropzone" id="singleFileUpload" action="/nota/upload">
+                        <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
+                          <h6>Tambahkan Bukti Nota Disini</h6><span class="note needsclick"></span>
+                        </div>
+                      </form>
+
+                    </br/></br/>
+                    <form id="tambah_kas">
+                      <div class="row">
+                        
+                      <div class="col-md-12 mb-6">
+                        <label for="nominal">Pilih Rekening</label>
+                          <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                          @foreach ($rekening as $key => $value)
+                            <div class="radio radio-primary">
+                              <input id="radioinline{{$key+1}}" type="radio" name="id_rekening" value="{{ $value->id_rekening }}">
+                              <label class="mb-0" for="radioinline{{$key+1}}">{{ $value->bank }} ({{ $value->no_rek }})</label>
+                            </div>
+                           @endforeach 
+                           <br/><br/>
+                        </div>
+                      </div>
+
+                      
+
+                      
+
+                        <div class="col-md-6 mb-3">
+                          <label for="nominal">Nominal</label>
+                          <input class="form-control" type="text" id="nominal" name="nominal" placeholder="500000" required="" data-original-title="" title="">
+                        </div>
+                        
+                        <input type="hidden" name="id_pengguna" value="{{ $session['id_pengguna'] }}">
+                        <input type="hidden" name="tipe" value="kas_keluar">
+                        
+                        <div class="col-md-6 mb-3">
+                          <label for="tanggal">Tanggal</label>
+                          <input class="datepicker-here form-control" name="tanggal" type="text" data-language="en" data-multiple-dates-separator=", " data-position="top left" placeholder="Pilih Tanggal">
+                        </div>
+                        <div class="col-md-12 mb-2">
+                        <label for="nominal">Keterangan</label>
+                          <textarea class="form-control" name="keterangan" rows="3"> </textarea>
+                        </div>
+                        
+                        
+
+                      </div>
+                      <button class="btn btn-primary" type="submit" data-original-title="" title="">Submit form</button>
+                    </form>
+
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5><i data-feather="book-open"></i> List Kas Keluar</h5><span>Kas Masuk Per {{ date('F') }} {{ date('Y') }}</span>
+                  </div>
+                  <div class="card-body">
+                  <div class="table-responsive">
+                        <table class="table table-striped table-bordered dt-responsive nowrap">
+                          <thead class="table-primary">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Nominal</th>
+                              <th scope="col">Tanggal</th>
+                              <th scope="col">Keterangan </th>
+                              <th scope="col">Nota </th>
+                              <th scope="col">Aksi </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                           
+                          
+                          @foreach ($data_kas as $key => $value)
+                                          <tr id="{{ $value->id_rekening }}" value="{{ $value->bank }}">
+                                              <td>{{ $key + 1 }}</td>
+                                              <td>@currency($value->nominal)</td>
+                                              <td>{{ $value->tanggal }}</td>
+                                              <td>{{ $value->keterangan }}</td>
+                                              <td  style="width:300px; white-space:nowrap;">
+                                              
+                                              <div class="gallery my-gallery card-body row" itemscope="">
+                                                <figure class="col-xl-3 col-md-4 col-6" itemprop="associatedMedia" itemscope="">
+                                                  <a href="{{ $value->lokasi_gambar }}" itemprop="contentUrl" data-size="1000x1000">
+                                                    <img class="img-thumbnail img-responsive" src="/assets/images/folder.png" itemprop="thumbnail" alt="Image description">
+                                                  </a>
+                                                  <figcaption itemprop="caption description">Image caption  1</figcaption>
+                                                </figure>
+                                              </div>
+                                            
+                                              </td>
+                                              <td style="width:1px; white-space:nowrap;">
+                                              <button id="delete-kas" type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i> Hapus</button>
+                                             
+                                              </td>                               
+                                          </tr>
+                          @endforeach
+
+                          
+                          </tbody>
+                        </table>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -167,6 +277,45 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
+
+
+
+
+
+                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="pswp__bg"></div>
+                    <div class="pswp__scroll-wrap">
+                      <div class="pswp__container">
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                        <div class="pswp__item"></div>
+                      </div>
+                      <div class="pswp__ui pswp__ui--hidden">
+                        <div class="pswp__top-bar">
+                          <div class="pswp__counter"></div>
+                          <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                          <button class="pswp__button pswp__button--share" title="Share"></button>
+                          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                          <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                          <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                              <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                          <div class="pswp__share-tooltip"></div>
+                        </div>
+                        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                        <div class="pswp__caption">
+                          <div class="pswp__caption__center"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
         <!-- footer start-->
         <footer class="footer">
@@ -178,56 +327,14 @@
             </div>
           </div>
         </footer>
-        <script>
-          var map;
-          function initMap() {
-            map = new google.maps.Map(
-              document.getElementById('map'),
-              {center: new google.maps.LatLng(-33.91700, 151.233), zoom: 18});
-          
-            var iconBase =
-              '/assets/images/dashboard-2/';
-          
-            var icons = {
-              userbig: {
-                icon: iconBase + '1.png'
-              },
-              library: {
-                icon: iconBase + '3.png'
-              },
-              info: {
-                icon: iconBase + '2.png'
-              }
-            };
-          
-            var features = [
-              {
-                position: new google.maps.LatLng(-33.91752, 151.23270),
-                type: 'info'
-              }, {
-                position: new google.maps.LatLng(-33.91700, 151.23280),
-                type: 'userbig'
-              },  {
-                position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
-                type: 'library'
-              }
-            ];
-          
-            // Create markers.
-            for (var i = 0; i < features.length; i++) {
-              var marker = new google.maps.Marker({
-                position: features[i].position,
-                icon: icons[features[i].type].icon,
-                map: map
-              });
-            };
-          }
-        </script>
-        <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&amp;callback=initMap"></script>
+        
+        
       </div>
     </div>
     <!-- latest jquery-->
     <script src="/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
+    
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/popper.min.js"></script>
     <script src="/assets/js/bootstrap/bootstrap.js"></script>
@@ -250,10 +357,98 @@
     <script src="/assets/js/custom-card/custom-card.js"></script>
     <script src="/assets/js/owlcarousel/owl.carousel.js"></script>
     <script src="/assets/js/dashboard/dashboard_2.js"></script>
+    <script src="../assets/js/datepicker/date-picker/datepicker.js"></script>
+    <script src="../assets/js/datepicker/date-picker/datepicker.en.js"></script>
+    <script src="../assets/js/datepicker/date-picker/datepicker.custom.js"></script>
     <script src="/assets/js/tooltip-init.js"></script>
+    <script src="/assets/js/dropzone/dropzone.js"></script>
+    <script src="/assets/js/dropzone/dropzone-script.js"></script>
+    <script src="/assets/js/photoswipe/photoswipe.min.js"></script>
+    <script src="/assets/js/photoswipe/photoswipe-ui-default.min.js"></script>
+    <script src="/assets/js/photoswipe/photoswipe.js"></script>
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="/assets/js/script.js"></script>
+
+    <script> 
+
+      $('document').ready( () => {
+
+        $('form[id=tambah_kas]').submit( (e) => {
+          
+          e.preventDefault();
+          
+          var kas_data =  $('form[id=tambah_kas]').serialize();
+          console.log(kas_data)
+          $.ajax({
+              url: '/kas/tambah',
+              type: 'POST',
+              data: kas_data,
+              success : (data) => {
+                //console.log(data);
+                swal({
+                    title: "Suksess 😽!",
+                    text: "Sukses menambahkan Rekening!",
+                    type: "success",
+                    icon: "success",
+                }).then(function() {
+                    window.location = "/kas/keluar";
+                });
+              },
+              error : (data) => {
+                swal({
+                    title: "Error 😿!",
+                    text: "Pastikan form telah diisi dengan benar!",
+                    type: "error",
+                    icon: "error",
+                });
+              }
+            })
+        
+        });
+
+      })
+
+
+      $('button[id=delete-kas]').click(function(){
+          var anu = $(this).parents('tr').attr('id');
+          var value = $(this).parents('tr').attr('value');
+
+          swal({
+            title: "Hapus 😿?",
+            text: "Apakah anda yakin ingin menghapus?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                url : '/kas/delete',
+                type : 'POST',
+                data : { id_kas : anu},
+                success : (data) => {
+                  swal("Sukses Menghapus 😽 !", {
+                    icon: "success",
+                  });
+                  window.location = "/kas/keluar";
+                },
+                error : (err) => {
+                  swal("Gagal Menghapus 😿 !", {
+                    icon: "error",
+                  });
+                }
+              })
+              
+            } else {
+              swal("Rekeing Bank Batal Dihapus 😽!");
+            }
+          });
+
+      });
+
+
+    </script>
     
     <!-- login js-->
     <!-- Plugin used-->

@@ -22,18 +22,54 @@ class UnchUI extends Controller
 
     public function UnchRekening()
     {
-        $data_reekening = Rekening::all();
-        return view('perfect_heena/UnchRekening', [ 'data_rek' => $data_reekening ]);   
+        $data_rekening = Rekening::all();
+        return view('perfect_heena/UnchRekening', [ 'data_rek' => $data_rekening ]);   
     }
 
-    public function UnchKasMasuk()
+    public function UnchKasMasuk(Request $request)
     {
-        return view('perfect_heena/UnchKasMasuk');   
+        if ($request->session()->has('pengguna')) {
+            $oceng_session = session('pengguna');
+        }
+
+        $now = new \DateTime('now');
+        $month = $now->format('m');
+        $year = $now->format('Y');
+
+        
+        $data_rekening = Rekening::all();
+
+        $data_kas = Kas::whereYear('tanggal','=', $year)
+                    ->whereMonth('tanggal', '=', $month)
+                    ->where('tipe','=','kas_masuk')
+                    ->join('notanes', 'kas.id_nota', '=', 'notanes.id_nota')
+                    ->get();
+
+        
+        return view('perfect_heena/UnchKasMasuk', [ 'data_kas' => $data_kas, 'session' => $oceng_session, 'rekening' => $data_rekening ]);   
     }
 
-    public function UnchKasKeluar()
+    public function UnchKasKeluar(Request $request)
     {
-        return view('perfect_heena/UnchKasKeluar');   
+        if ($request->session()->has('pengguna')) {
+            $oceng_session = session('pengguna');
+        }
+
+        $now = new \DateTime('now');
+        $month = $now->format('m');
+        $year = $now->format('Y');
+
+        
+        $data_rekening = Rekening::all();
+
+        $data_kas = Kas::whereYear('tanggal','=', $year)
+                    ->whereMonth('tanggal', '=', $month)
+                    ->where('tipe','=','kas_keluar')
+                    ->join('notanes', 'kas.id_nota', '=', 'notanes.id_nota')
+                    ->get();
+
+        
+        return view('perfect_heena/UnchKasKeluar', [ 'data_kas' => $data_kas, 'session' => $oceng_session, 'rekening' => $data_rekening ]); 
     }
 
     public function UnchProfil()

@@ -44,3 +44,7 @@ Route::post('/kas/tambah','KasController@TambahKas');
 Route::post('/kas/delete','KasController@DeleteKas');
 Route::post('/kas/update','KasController@UpdateKas');
 Route::get('/kas/show/{id}','KasController@ShowKas');
+
+
+Route::post('/nota/upload','NotaneController@UploadNota');
+Route::get('/nota/id','NotaneController@getLastID');

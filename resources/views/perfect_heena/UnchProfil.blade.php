@@ -63,7 +63,7 @@
           <div class="left-header col horizontal-wrapper pl-0">
             <ul class="horizontal-menu">
               
-            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="database"></i><span>KARANG TARUNA TIPES</span></a>
+            <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="database"></i><span>Profil</span></a>
               
                  
               </li>
@@ -138,13 +138,13 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h3>Sample Page</h3>
+                  
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">                                       <i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item">Pages</li>
-                    <li class="breadcrumb-item active">Sample Page</li>
+                    <li class="breadcrumb-item">Profil</li>
+                  
                   </ol>
                 </div>
               </div>
@@ -152,14 +152,27 @@
           </div>
           <!-- Container-fluid starts-->
           <div class="container-fluid">
-            <div class="row">
+          <div class="row">
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header">
-                    <h5>Sample Card</h5><span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                    <h5><i data-feather="lock"></i> Ganti Password</h5><span>Form Ganti Password</span>
                   </div>
                   <div class="card-body">
-                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                    <form id="tambah_rekening">
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="bank">Password Baru</label>
+                          <input class="form-control" type="password" id="bank" name="bank" placeholder="" required="" data-original-title="" title="">
+                          
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="no_rek">Verifikasi Password Baru</label>
+                          <input class="form-control" type="password" id="no_rek" name="no_rek" placeholder="" required="" data-original-title="" title="">
+                        </div>
+                      </div>
+                      <button class="btn btn-primary" type="submit" data-original-title="" title="">Ganti Password</button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -178,52 +191,6 @@
             </div>
           </div>
         </footer>
-        <script>
-          var map;
-          function initMap() {
-            map = new google.maps.Map(
-              document.getElementById('map'),
-              {center: new google.maps.LatLng(-33.91700, 151.233), zoom: 18});
-          
-            var iconBase =
-              '/assets/images/dashboard-2/';
-          
-            var icons = {
-              userbig: {
-                icon: iconBase + '1.png'
-              },
-              library: {
-                icon: iconBase + '3.png'
-              },
-              info: {
-                icon: iconBase + '2.png'
-              }
-            };
-          
-            var features = [
-              {
-                position: new google.maps.LatLng(-33.91752, 151.23270),
-                type: 'info'
-              }, {
-                position: new google.maps.LatLng(-33.91700, 151.23280),
-                type: 'userbig'
-              },  {
-                position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
-                type: 'library'
-              }
-            ];
-          
-            // Create markers.
-            for (var i = 0; i < features.length; i++) {
-              var marker = new google.maps.Marker({
-                position: features[i].position,
-                icon: icons[features[i].type].icon,
-                map: map
-              });
-            };
-          }
-        </script>
-        <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGCQvcXUsXwCdYArPXo72dLZ31WS3WQRw&amp;callback=initMap"></script>
       </div>
     </div>
     <!-- latest jquery-->
@@ -258,4 +225,43 @@
     <!-- login js-->
     <!-- Plugin used-->
   </body>
+
+
+  <script>
+
+$('form[id=tambah_rekening]').submit( (e) => {
+          
+          e.preventDefault();
+          
+          var rekening_data =  $('form[id=ganti_password]').serialize();
+
+          $.ajax({
+              url: '/rekening/tambah',
+              type: 'POST',
+              data: rekening_data,
+              success : (data) => {
+                //console.log(data);
+                swal({
+                    title: "Suksess 😽!",
+                    text: "Sukses menambahkan Rekening!",
+                    type: "success",
+                    icon: "success",
+                }).then(function() {
+                    window.location = "rekening";
+                });
+              },
+              error : (data) => {
+                swal({
+                    title: "Error 😿!",
+                    text: "Pastikan form telah diisi dengan benar!",
+                    type: "error",
+                    icon: "error",
+                });
+              }
+            })
+        
+        });
+
+      })
+  </script>
 </html>
